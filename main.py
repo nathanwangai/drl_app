@@ -30,7 +30,7 @@ with col1: # --------------- DATA INPUT COLUMN ---------------
         selection_var_array = [indication, adult_body_region, age_class, weight_class]
         for var in selection_var_array:
             if (var != None): 
-                ref_ctdivol, ref_dlp = retrieve_ref_doses(df, var)
+                ref_ctdivol, ref_dlp = retrieve_ref_doses(df, var, include_indications)
                 break
 
         ctdivol, dlp = system_parameters_expander(ref_ctdivol, ref_dlp)
@@ -46,7 +46,7 @@ with col1: # --------------- DATA INPUT COLUMN ---------------
         selection_var_array = [indication, adult_body_region, age_class]
         for var in selection_var_array:
             if (var != None): 
-                ref_ctdivol, ref_dlp = retrieve_ref_doses(df, var, contrast_usage)
+                ref_ctdivol, ref_dlp = retrieve_ref_doses(df, var, indication!=None, contrast_usage)
                 break
         
         if (ref_ctdivol == '-' and ref_dlp == '-'):

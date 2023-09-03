@@ -48,18 +48,18 @@ def create_dose_bars(title, ref_dose, dose):
 - key: variable to retrieve DRL (e.g. age or weight)
 - contrast_usage: 'Without contrast' or 'With contrast'
 '''
-def retrieve_ref_doses(df, key, contrast_usage=None):
+def retrieve_ref_doses(df, key, any_indications=False, contrast_usage=None):
     col_name = df.columns[0]
+    ctdi_type = 'CTDIvol'
+    dlp_type = 'DLP'
 
-    if (contrast_usage == 'With contrast'): 
-        ctdi_type = 'CTDIvol_w_contrast'
-        dlp_type = 'DLP_w_contrast'
-    elif (contrast_usage == 'Without contrast'):
-        ctdi_type = 'CTDIvol_wo_contrast'
-        dlp_type = 'DLP_wo_contrast'
-    else:
-        ctdi_type = 'CTDIvol'
-        dlp_type = 'DLP'
+    if not any_indications:
+        if (contrast_usage == 'With contrast'): 
+            ctdi_type = 'CTDIvol_w_contrast'
+            dlp_type = 'DLP_w_contrast'
+        elif (contrast_usage == 'Without contrast'):
+            ctdi_type = 'CTDIvol_wo_contrast'
+            dlp_type = 'DLP_wo_contrast'
     
     ref_ctdivol = df[df[col_name] == key][ctdi_type].values[0]
     ref_dlp = df[df[col_name] == key][dlp_type].values[0]
