@@ -1,4 +1,4 @@
-Region,CTDIvol_w_contrast,DLP_w_contrast,CTDIvol_wo_contrast,DLP_wo_contrast
+Region,CTDIvol_wo_contrast,DLP_wo_contrast,CTDIvol_w_contrast,DLP_w_contrast
 Head,56,962,-,-
 Neck,-,-,19,563
 Cervical spine,28,562,-,-
