@@ -1,98 +1,55 @@
 Category,Recommendation
-Child Head,"1. As a first step towards radiation dose optimization, please consider reducing the radiation dose
-just below the DRL for the specified CT exam type and patient age.
+Child Head,"1. As a first step towards radiation dose optimization, please consider reducing the radiation dose for the CT exam type and patient age group.
 2. Please ensure proper patient centering.
 3. Avoid using 140 kV
-4. Consider reducing tube current. Please remember that tube current has a linear relation with
-radiation dose. A 25% reduction in tube current will lead to 25% decrease in radiation dose if all
-other scan factors are constant.
-5. When available, please consider using iterative reconstruction (IR) or deep learning (DL)
-reconstruction techniques to reduce image noise. Choice of IR strength varies based on the
-scanner and vendor (typically a strength of 2-3 (Siemens/Philips), mild-moderate (Canon) or 30-
-40% (GE) is sufficient for most CT protocols)."
-Child Chest,"1. Please consider reducing the radiation dose just below the DRL for the specified CT exam type
-and patient size.
+4. Consider reducing tube current. Please remember that tube current has a linear relation with radiation dose. A 25% reduction in tube current will lead to 25% decrease in radiation dose if all other scan factors are constant.
+5. When available, please consider using iterative reconstruction (IR) or deep learning (DL) reconstruction techniques to reduce image noise. Choice of IR strength varies based on the scanner and vendor (typically a strength of 2-3 (Siemens/Philips), mild-moderate (Canon) or 30-40% (GE) is sufficient for most CT protocols)."
+Child Chest,"1. Please consider reducing the radiation dose.
 2. Please ensure proper patient centering.
-3. For chest CT, please make sure to keep a fast acquisition time (with higher pitch and/or fast
-rotation time) to minimize motion artifacts. It is important to avoid or minimize motion artifacts
-to avoid loss of diagnostic information and unnecessary repeat scanning.
-4. For patients &lt;50 kg, 80 KV is typically sufficient. For patients 50-80 kg, 100 kV is generally
-sufficient for chest CT.
-5. You can also consider decreasing tube current for reducing radiation dose. Please remember
-that tube current has a linear relation with radiation dose. A 25% reduction in tube current will
-lead to 25% decrease in radiation dose if all other scan factors are constant.
-6. Most chest CT must be performed with a single-phase chest CT protocol. Perform either non-
-contrast chest CT or post-contrast CT based on clinical need.
-7. When available, please consider using iterative reconstruction (IR) or deep learning (DL)
-reconstruction techniques to reduce image noise. Choice of IR strength varies based on the
-
-scanner and vendor (typically a strength of 2-3 (Siemens/Philips), mild-moderate (Canon) or 30-
-40% (GE) is sufficient for most CT protocols)."
-Child Abdomen,"1. Please consider reducing the radiation dose just below the DRL for the specified CT exam type
-and patient size.
+3. For chest CT, please make sure to keep a fast acquisition time (with higher pitch and/or fast rotation time) to minimize motion artifacts. It is important to avoid or minimize motion artifacts to avoid loss of diagnostic information and unnecessary repeat scanning.
+4. For patients <50 kg, 80 KV is typically sufficient. For patients 50-80 kg, 100 kV is generally sufficient for chest CT.
+5. You can also consider decreasing tube current for reducing radiation dose. Please remember that tube current has a linear relation with radiation dose. A 25% reduction in tube current will lead to 25% decrease in radiation dose if all other scan factors are constant.
+6. Most chest CT must be performed with a single-phase chest CT protocol. Perform either non-contrast chest CT or post-contrast CT based on clinical need.
+7. When available, please consider using iterative reconstruction (IR) or deep learning (DL) reconstruction techniques to reduce image noise. Choice of IR strength varies based on the scanner and vendor (typically a strength of 2-3 (Siemens/Philips), mild-moderate (Canon) or 30-40% (GE) is sufficient for most CT protocols)."
+Child Abdomen,"1. Please consider reducing the radiation dose.
 2. Please ensure proper patient centering.
-3. Avoid use of 140 kV for abdomen CT. You can use 100-120 kV for smaller children (&lt;50 kg). Or
-you can use automatic tube potential selection technique.
-4. You can consider decreasing tube current for reducing radiation dose. Please remember that
-tube current has a linear relation with radiation dose. A 25% reduction in tube current will lead
-to 25% decrease in radiation dose if all other scan factors are constant.
+3. Avoid the use of 140 kV for abdomen CT. You can use 100-120 kV for smaller children (<50 kg).
+Or you can use automatic tube potential selection technique.
+4. You can consider decreasing tube current to reduce radiation dose. Please remember that tube
+current has a linear relation with radiation dose. A 25% reduction in tube current will lead to a
+25% decrease in radiation dose if all other scan factors are constant.
 5. Most routine pediatric abdomen CT exams should be done with a single-phase CT.
 6. When performing multi-phase abdomen CT, ensure proper clinical justification (such as for liver
 or renal lesion evaluation or hematuria).
-7. For multiphase CT, often the scan length for some phases can be limited to the organ of main
-clinical interest. For example, limiting arterial phase CT to liver for liver lesions. Likewise,
-eliminating certain phases such as non-contrast phase for liver CT can also help reduce dose.
-8. When available, please consider using iterative reconstruction (IR) or deep learning (DL)
-reconstruction techniques to reduce image noise. Choice of IR strength varies based on the
-scanner and vendor (typically a strength of 2-3 (Siemens/Philips), mild-moderate (Canon) or 30-
-40% (GE) is sufficient for most CT protocols)."
-Adult Head,"1. Please consider reducing the radiation dose just below the DRL for the specified CT exam type.
+7. For multiphase CT, the scan length for some phases can be limited to the organ of main clinical
+interest. For example, limiting arterial phase CT to the liver for liver lesions. Likewise, eliminating
+certain phases, such as the non-contrast phase for liver CT, can also help reduce the dose.
+8. Please consider using iterative reconstruction (IR) or deep learning (DL) reconstruction
+techniques to reduce image noise when available. Choice of IR strength varies based on the
+scanner and vendor (typically a strength of 2-3 (Siemens/Philips), mild-moderate (Canon) or 30-40% (GE) is sufficient for most CT protocols)."
+Adult Head,"1. Please consider reducing the radiation dose.
 2. Please ensure proper patient centering.
 3. Avoid using 140 kV
-4. Consider reducing tube current. Please remember that tube current has a linear relation with
-radiation dose. A 25% reduction in tube current will lead to 25% decrease in radiation dose if all
-other scan factors are constant.
-5. When available, please consider using iterative reconstruction (IR) or deep learning (DL)
-reconstruction techniques to reduce image noise. Choice of IR strength varies based on the scanner
-and vendor (typically a strength of 2-3 (Siemens/Philips), mild-moderate (Canon) or 30-40% (GE) is
-sufficient for most CT protocols)."
+4. Consider reducing tube current. Please remember that tube current has a linear relation with radiation dose. A 25% reduction in tube current will lead to a 25% decrease in radiation dose if all other scan factors are constant.
+5. Please consider using iterative reconstruction (IR) or deep learning (DL) reconstruction techniques to reduce image noise when available. Choice of IR strength varies based on the scanner and vendor (typically a strength of 2-3 (Siemens/Philips), mild-moderate (Canon) or 30-40% (GE) is sufficient for
+most CT protocols)."
 Adult Chest,"1. Radiation doses greater than the DRLs are acceptable for large patients.
-2. For non-obese patients (typically &lt; 70-80 kg), please consider reducing the radiation dose just below
-the DRL for the specified CT exam type.
-
+2. For non-obese patients (typically &lt; 70-80 kg), please consider reducing the radiation dose just below the DRL for the specified CT exam type.
 3. Please ensure proper patient centering.
-4. Please keep a fast acquisition time (with higher pitch and/or fast rotation time) to minimize motion
-artifacts. It is important to avoid or minimize motion artifacts to avoid loss of diagnostic information
+4. Please keep a fast acquisition time (with higher pitch and/or fast rotation time) to minimize motion artifacts. It is important to avoid or minimize motion artifacts to avoid loss of diagnostic information
 and unnecessary repeat scanning.
-5. For patients &lt;50 kg, 80 KV is typically sufficient. For patients 50-80 kg, 100 kV is generally sufficient
-for chest CT.
-6. For some patients, you can reduce tube current for reducing radiation dose. Please remember that
-tube current has a linear relation with radiation dose. A 25% reduction in tube current will lead to
-25% decrease in radiation dose if all other scan factors are constant.
-7. Most chest CT must be performed with a single-phase chest CT protocol. Perform either non-
-contrast chest CT or post-contrast CT based on clinical need.
-8. For dual-phase chest CT (such as in inspiration and expiration) in patients with interstitial lung
-diseases or tracheal collapsibility, please perform expiration phase CT with low radiation dose (at
-least 50% below the inspiration phase dose).
-9. When available, please consider using iterative reconstruction (IR) or deep learning (DL)
-reconstruction techniques to reduce image noise. Choice of IR strength varies based on the scanner
-and vendor (typically a strength of 2-3 (Siemens/Philips), mild-moderate (Canon) or 30-40% (GE) is
+5. For patients <50 kg, 80 KV is typically sufficient. For patients 50-80 kg, 100 kV is generally sufficient for chest CT.
+6. For some patients, you can reduce tube current for reducing radiation dose. Please remember that tube current has a linear relation with radiation dose. A 25% reduction in tube current will lead to 25% decrease in radiation dose if all other scan factors are constant.
+7. Most chest CT must be performed with a single-phase chest CT protocol. Perform either non-contrast chest CT or post-contrast CT based on clinical need.
+8. For dual-phase chest CT (such as in inspiration and expiration) in patients with interstitial lung diseases or tracheal collapsibility, please perform expiration phase CT with low radiation dose (at least 50% below the inspiration phase dose).
+9. When available, please consider using iterative reconstruction (IR) or deep learning (DL) reconstruction techniques to reduce image noise. Choice of IR strength varies based on the scanner and vendor (typically a strength of 2-3 (Siemens/Philips), mild-moderate (Canon) or 30-40% (GE) is
 sufficient for most CT protocols)."
 Adult Abdomen,"1. Radiation doses greater than the DRLs are acceptable for large patients.
-2. For non-obese patients (typically &lt; 70-80 kg), please consider reducing the radiation dose just below
-the DRL for the specified CT exam type.
+2. For non-obese patients (typically <70-80 kg), please consider reducing the radiation dose just below the DRL for the specified CT exam type.
 3. Please ensure proper patient centering.
-4. Consider decreasing tube current for reducing radiation dose. Please remember that tube current
-has a linear relation with radiation dose. A 25% reduction in tube current will lead to 25% decrease
-in radiation dose if all other scan factors are constant.
-5. Avoid use of 140 kV for abdomen CT for non-obese patients.
+4. Consider decreasing tube current to reduce radiation dose. Please remember that tube current has a linear relation with radiation dose. A 25% reduction in tube current will lead to a 25% decrease in radiation dose if all other scan factors are constant.
+5. Avoid the use of 140 kV for abdomen CT for non-obese patients.
 6. Most routine abdomen CT exams should be done with a single-phase CT.
-7. When performing multi-phase abdomen CT, ensure proper clinical justification (such as for liver or
-renal lesion evaluation or hematuria).
-8. For multiphase CT, often the scan length for some phases can be limited to the organ of main clinical
-interest. For example, limiting arterial phase CT to liver for liver lesions. Likewise, eliminating certain
-phases such as non-contrast phase for liver CT can also help reduce dose.
-9. When available, please consider using iterative reconstruction (IR) or deep learning (DL)
-reconstruction techniques to reduce image noise. Choice of IR strength varies based on the scanner
-and vendor (typically a strength of 2-3 (Siemens/Philips), mild-moderate (Canon) or 30-40% (GE) is
-sufficient for most CT protocols)."
+7. When performing multi-phase abdomen CT, ensure proper clinical justification (such as for liver or renal lesion evaluation or hematuria).
+8. For multiphase CT, the scan length for some phases can be limited to the organ of the main clinical interest. For example, limiting arterial phase CT to the liver for liver lesions. Likewise, eliminating certain phases, such as non-contrast phase for liver CT, can also help reduce the dose.
+9. Please consider using iterative reconstruction (IR) or deep learning (DL) reconstruction techniques to reduce image noise when available. Choice of IR strength varies based on the scanner and vendor (typically a strength of 2-3 (Siemens/Philips), mild-moderate (Canon) or 30-40% (GE) is sufficient for most CT protocols)."

@@ -27,14 +27,34 @@ def sidebar():
                 'Select contrast usage:',
                 ('Without contrast', 'With contrast')
             )
+            st.markdown('''
+                        - **Pediatric doses:** Kanal KM, Butler PF, Chatfield MB, et al. U.S. Diagnostic Reference Levels and Achievable Doses for 10 Pediatric CT Examinations. Radiology. 
+                        2022;302(1):164-174. [doi:10.1148/radiol.2021211241](https://pubs.rsna.org/doi/10.1148/radiol.2021211241)
+                        - **Pediatric and adult doses:** ACR–AAPM–SPR PRACTICE PARAMETER FOR DIAGNOSTIC REFERENCE LEVELS AND ACHIEVABLE DOSES IN MEDICAL X-RAY IMAGING. Published online 2022. Accessed September 10, 2023. 
+                        https://www.acr.org/-/media/ACR/Files/Practice-Parameters/diag-ref-levels.pdf 
+                        - **Clinical indication-based doses:** Bos D, Yu S, Luong J, et al. Diagnostic reference levels and median doses for common clinical indications of CT: findings from an international registry. Eur Radiol. 
+                        2022;32(3):1971-1982. [doi:10.1007/s00330-021-08266-1](https://link.springer.com/article/10.1007/s00330-021-08266-1)
+                        ''')
+        else: # ref_country == 'Europe'
+            st.markdown('''
+                        - **Pediatric doses:** Directorate-General for Energy (European Commission). Technical Recommendations for Monitoring Individuals for Occupational Intakes of Radionuclides. Publications Office of the European Union; 2018. Accessed September 11, 2023. 
+                        https://data.europa.eu/doi/10.2833/393101
+                        - **Adult doses (UK):** National Diagnostic Reference Levels (NDRLs) from 13 October 2022. GOV.UK. Accessed September 10, 2023. 
+                        https://www.gov.uk/government/publications/diagnostic-radiology-national-diagnostic-reference-levels-ndrls/ndrl
+                        - **Clinical indication-based doses:** 
+                            - Directorate-General for Energy (European Commission), Damilakis J, Frija G, et al. European Study on Clinical Diagnostic Reference Levels for X-Ray Medical Imaging: EUCLID. Publications Office of the European Union; 2021. Accessed September 10, 2023. 
+                              https://data.europa.eu/doi/10.2833/452154 
+                            - Diagnostic reference levels and median doses for common clinical indications of CT: findings from an international registry. Eur Radiol. 
+                              2022;32(3):1971-1982. [doi:10.1007/s00330-021-08266-1](https://link.springer.com/article/10.1007/s00330-021-08266-1)
+                        ''')
 
-        st.subheader('Dose Input Instructions')
-        st.info('''
-        1. Do NOT input scout/localizer doses or doses related to bolus tracking or test bolus. 
-        2. For multiple-run, multiple body parts CT, please input CTDIvol and DLP separately. 
-        3. For multiphase CT (>1 acquisition), please input the maximum single CTDIvol (Ex: if CTDIvol are 4 and 6 mGy for two scan series, input 6 mGy. Do NOT add CTDIvol)
-        4. For multiphase CT (>1 acquisition), please input the total DLP (Ex: if DLP are 300 and 600 mGy.cm for two scan series, input 900 mGy.cm)
-        ''')
+        # st.subheader('Dose Input Instructions')
+        # st.info('''
+        # 1. Do NOT input scout/localizer doses or doses related to bolus tracking or test bolus. 
+        # 2. For multiple-run, multiple body parts CT, please input CTDIvol and DLP separately. 
+        # 3. For multiphase CT (>1 acquisition), please input the maximum single CTDIvol (Ex: if CTDIvol are 4 and 6 mGy for two scan series, input 6 mGy. Do NOT add CTDIvol)
+        # 4. For multiphase CT (>1 acquisition), please input the total DLP (Ex: if DLP are 300 and 600 mGy.cm for two scan series, input 900 mGy.cm)
+        # ''')
 
     return ref_country, contrast_usage
 
