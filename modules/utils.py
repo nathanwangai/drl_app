@@ -25,7 +25,7 @@ def load_ref_helper(id1, id2, use_europe):
 def create_dose_bars(title, ref_dose, dose):
     fig, ax = plt.subplots(figsize=(8, 2))
     ax.barh(' ', ref_dose, color='green', alpha=0.15)
-    ax.barh(' ', ref_dose*2, left=ref_dose, color='red', alpha=0.15)
+    ax.barh(' ', ref_dose*9, left=ref_dose, color='red', alpha=0.15)
 
     # hide borders and y-axis
     ax.spines['top'].set_visible(False)
@@ -34,7 +34,7 @@ def create_dose_bars(title, ref_dose, dose):
     ax.spines['left'].set_visible(False)
     ax.get_yaxis().set_visible(False)
 
-    ax.set_xticks(np.arange(4) * ref_dose)
+    ax.set_xticks(np.arange(6) * 2*ref_dose)
     ax.tick_params(axis='x', labelsize=24)
     ax.xaxis.set_tick_params(width=3, length=9)
 

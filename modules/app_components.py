@@ -6,7 +6,7 @@ def load_ref(id1, id2, use_europe=True):
     return load_ref_helper(id1, id2, use_europe)
 
 '''
-- Select reference standard (stored in session state)
+- Select reference standard
 
 Decision paths:
 - 'Europe'
@@ -183,8 +183,8 @@ def clinical_indications_expander(adult_body_region, use_europe=True):
 '''
 def system_parameters_expander(ref_ctdivol, ref_dlp):
     with st.expander('**CT Doses**', expanded=True):
-        max_ctdivol = float(3*ref_ctdivol) if ref_ctdivol != '-' else None
-        max_dlp = float(3*ref_dlp) if ref_dlp != '-' else None
+        max_ctdivol = float(10*ref_ctdivol) if ref_ctdivol != '-' else None
+        max_dlp = float(10*ref_dlp) if ref_dlp != '-' else None
         
         innercol1, innercol2 = st.columns(2)
         with innercol1:
