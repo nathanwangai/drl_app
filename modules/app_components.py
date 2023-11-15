@@ -1,3 +1,4 @@
+import numpy as np
 import streamlit as st
 from modules.utils import load_ref_helper, compare_doses
 
@@ -186,15 +187,21 @@ def system_parameters_expander(ref_ctdivol, ref_dlp):
         max_ctdivol = float(10*ref_ctdivol) if ref_ctdivol != '-' else None
         max_dlp = float(10*ref_dlp) if ref_dlp != '-' else None
         
+        col1, _, _ = st.columns(3)
+        with col1: 
+            num_phases = st.number_input('Number of Phases', min_value=1, max_value=10)
+            ctdivol_arr = np.empty(num_phases)
+            dlp_arr = np.empty(num_phases)
+
         innercol1, innercol2 = st.columns(2)
-        with innercol1:
-            ctdivol = st.number_input('CTDIvol (mGy)', step=0.1, min_value=0.0, max_value=max_ctdivol, format='%.1f', help='Volume Computed Tomography Dose Index')
-        
-        with innercol2:
-            dlp = st.number_input('DLP (mGy·cm)', step=1.0,  min_value=0.0, max_value=max_dlp, format='%.0f', help='Dose Length Product')
+        for i in range(num_phases):
+            with innercol1:
+                ctdivol_arr[i] = st.number_input('CTDIvol (mGy)', step=0.1, min_value=0.0, max_value=max_ctdivol, format='%.1f', key=i)
+            
+            with innercol2:
+                dlp_arr[i] = st.number_input('DLP (mGy·cm)', step=1.0,  min_value=0.0, max_value=max_dlp, format='%.0f', key=99-i)
 
-    return ctdivol, dlp
-
+    return np.median(ctdivol_arr), np.sum(dlp_arr)
 '''
 - View recommendations
 
