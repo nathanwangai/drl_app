@@ -21,7 +21,7 @@ def retrieve_ref_doses(df, col_name, choice, contrast=False):
 
 @st.cache_data
 def load_df(fname):
-    return pd.read_csv(f'drls\{fname}')
+    return pd.read_csv(f'drls/{fname}')
 
 def compare_doses(ref_dose, dose, dose_type):
     if (ref_dose != '-' and dose > ref_dose):

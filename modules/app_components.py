@@ -44,7 +44,7 @@ def europe_data_input():
         )
 
         if (patient_type == 'Child'):
-            df = load_df('../europe_pediatric_drls.csv')
+            df = load_df('europe_pediatric_drls.csv')
             region = st.radio(
                 'Select body region:',
                 df['Region'].unique()
@@ -60,7 +60,7 @@ def europe_data_input():
             return patient_type, region, choice, ctdivol, dlp
 
         elif st.checkbox('Include clinical indications?'): 
-            df = load_df('../europe_clinical_drls.csv')
+            df = load_df('europe_clinical_drls.csv')
             region = st.radio(
                 'Select body region: ',
                 df['Region'].unique()
@@ -76,7 +76,7 @@ def europe_data_input():
             return patient_type, indication, ctdivol, dlp
 
         else:
-            df = load_df('../uk_adult_drls.csv')
+            df = load_df('uk_adult_drls.csv')
             region = st.radio(
                 'Select body region: ',
                 df['Region'].unique()
@@ -95,7 +95,7 @@ def us_data_input():
         )
 
         if (patient_type == 'Child'):
-            df = load_df('../us_pediatric_drls.csv')
+            df = load_df('us_pediatric_drls.csv')
             region = st.radio(
                 'Select body region:',
                 df['Region'].unique()
@@ -119,7 +119,7 @@ def us_data_input():
             return patient_type, region, age_or_weight, ctdivol, dlp
 
         elif st.checkbox('Include clinical indications?'): 
-            df = load_df('../us_clinical_drls.csv')
+            df = load_df('us_clinical_drls.csv')
             region = st.radio(
                 'Select body region: ',
                 df['Region'].unique()
@@ -135,7 +135,7 @@ def us_data_input():
             return patient_type, indication, ctdivol, dlp
         
         else:
-            df = load_df('../us_adult_drls.csv')
+            df = load_df('us_adult_drls.csv')
             region = st.radio(
                 'Select body region: ',
                 df['Region'].unique()
@@ -187,7 +187,7 @@ def system_parameters_input(ctdivol, dlp):
     return np.median(ctdivol_arr), np.sum(dlp_arr)
 
 def recommendations(ref_ctdivol, ref_dlp, ctdivol, dlp, patient_type, region):
-    df = load_df('../recommendations.csv')
+    df = load_df('recommendations.csv')
     ctdivol_safe = compare_doses(ref_ctdivol, ctdivol, 'CTDIvol')
     dlp_safe = compare_doses(ref_dlp, dlp, 'DLP')
 
