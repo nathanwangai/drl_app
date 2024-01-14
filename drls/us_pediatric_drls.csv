@@ -1,0 +1,20 @@
+Region,Age/Weight,CTDIvol,DLP,CTDIvol_contrast,DLP_contrast
+Head,0-1 year,23,344,-,-
+Head,1-2 years,27,440,-,-
+Head,2-6 years,31,518,-,-
+Head,6-18 years,55,910,-,-
+Chest,0-1 year,1.7,27,1.6,31
+Chest,1-5 years,2.2,49,2.4,58
+Chest,5-10 years,2.5,70,2.9,95
+Chest,10-15 years,4.1,128,7.2,272
+Chest,15-18 years,7.4,257,14,596
+Abdomen,0-1 year,-,-,2.4,60
+Abdomen,1-5 years,2.6,95,2.9,100
+Abdomen,5-10 years,4.8,171,4.6,170
+Abdomen,10-15 years,8.1,367,7.9,358
+Abdomen,15-18 years,11,510,11,511
+Chest-Abdomen-Pelvis,0-1 year,-,-,2.7,89
+Chest-Abdomen-Pelvis,1-5 years,-,-,3,109
+Chest-Abdomen-Pelvis,5-10 years,-,-,4.3,204
+Chest-Abdomen-Pelvis,10-15 years,-,-,9.1,437
+Chest-Abdomen-Pelvis,15-18 years,-,-,17,964

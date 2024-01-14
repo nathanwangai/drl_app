@@ -1,0 +1,15 @@
+Region,Age/Weight,CTDIvol,DLP
+Head,0-3 months,24,300
+Head,3-12 months,28,385
+Head,1-6 years,40,505
+Head,>6 years,50,650
+Chest,<5 kg,1.4,35
+Chest,5-15 kg,1.8,50
+Chest,15-30 kg,2.7,70
+Chest,30-50 kg,3.7,115
+Chest,50-80 kg,5.4,200
+Abdomen,<5 kg,-,45
+Abdomen,5-15 kg,3.5,120
+Abdomen,15-30 kg,5.4,150
+Abdomen,30-50 kg,7.3,210
+Abdomen,50-80 kg,13,480

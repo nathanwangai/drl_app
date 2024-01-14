@@ -1,33 +1,16 @@
 import numpy as np
 import streamlit as st
-from modules.utils import load_ref_helper, compare_doses
+from modules.utils import retrieve_ref_doses, load_df, compare_doses
 
-@st.cache_data
-def load_ref(id1, id2, use_europe=True):
-    return load_ref_helper(id1, id2, use_europe)
-
-'''
-- Select reference standard
-
-Decision paths:
-- 'Europe'
-- 'United States' -> ('Without Contrast', 'With Contrast')
-'''
 def sidebar():
     with st.sidebar:
         st.header('Reference Menu')
-        contrast_usage = None
-
         ref_country = st.sidebar.selectbox(
             'Select reference standard:',
             ('Europe', 'United States')
         )
         
         if (ref_country == 'United States'):
-            contrast_usage = st.radio(
-                'Select contrast usage:',
-                ('Without contrast', 'With contrast')
-            )
             st.markdown('''
                         - **Pediatric doses:** Kanal KM, Butler PF, Chatfield MB, et al. U.S. Diagnostic Reference Levels and Achievable Doses for 10 Pediatric CT Examinations. Radiology. 
                         2022;302(1):164-174. [doi:10.1148/radiol.2021211241](https://pubs.rsna.org/doi/10.1148/radiol.2021211241)
@@ -36,7 +19,7 @@ def sidebar():
                         - **Clinical indication-based doses:** Bos D, Yu S, Luong J, et al. Diagnostic reference levels and median doses for common clinical indications of CT: findings from an international registry. Eur Radiol. 
                         2022;32(3):1971-1982. [doi:10.1007/s00330-021-08266-1](https://link.springer.com/article/10.1007/s00330-021-08266-1)
                         ''')
-        else: # ref_country == 'Europe'
+        else:
             st.markdown('''
                         - **Pediatric doses:** Directorate-General for Energy (European Commission). Technical Recommendations for Monitoring Individuals for Occupational Intakes of Radionuclides. Publications Office of the European Union; 2018. Accessed September 11, 2023. 
                         https://data.europa.eu/doi/10.2833/393101
@@ -49,183 +32,172 @@ def sidebar():
                               2022;32(3):1971-1982. [doi:10.1007/s00330-021-08266-1](https://link.springer.com/article/10.1007/s00330-021-08266-1)
                         ''')
 
-        # st.subheader('Dose Input Instructions')
-        # st.info('''
-        # 1. Do NOT input scout/localizer doses or doses related to bolus tracking or test bolus. 
-        # 2. For multiple-run, multiple body parts CT, please input CTDIvol and DLP separately. 
-        # 3. For multiphase CT (>1 acquisition), please input the maximum single CTDIvol (Ex: if CTDIvol are 4 and 6 mGy for two scan series, input 6 mGy. Do NOT add CTDIvol)
-        # 4. For multiphase CT (>1 acquisition), please input the total DLP (Ex: if DLP are 300 and 600 mGy.cm for two scan series, input 900 mGy.cm)
-        # ''')
+    return ref_country
 
-    return ref_country, contrast_usage
+def europe_data_input():
+    with st.container(border=True):
+        st.subheader('**Data Input**')
 
-'''
-- Input demographic information according to European reference
-
-Decision paths:
-- 'Adult' -> Body Region
-- 'Child' -> 'Head' -> Age
-- 'Child' -> ('Chest', 'Abdomen') -> Weight
-'''
-def europe_demographics_expander():
-    life_stage = None # 'Child' or 'Adult'
-    adult_body_region = None # 'Head', 'Neck', 'Cervical spine', 'Chest', 'CTPA', 'Abdomen-pelvis', or 'Chest-abdomen-pelvis'
-    child_body_region = None # 'Head', 'Chest', or 'Abdomen'
-    age_class = None # '0-3 months', '3-12 months', '1-6 years', '>6 years'
-    weight_class = None # '0-5 kg', '5-15 kg', '15-30 kg', '30-50 kg', '50-80 kg'
-    include_indications = None # boolean
-    df = None # pandas dataframe
-
-    with st.expander('**Demographics**', expanded=True):
-        life_stage = st.radio(
-            'Select age group:',
+        patient_type = st.radio(
+            'Is the patient a child or adult?',
             ('Child', 'Adult')
         )
 
-        if (life_stage == 'Adult'): 
-            df = load_ref(life_stage, 'regions')
-            adult_body_region= st.selectbox(
+        if (patient_type == 'Child'):
+            df = load_df('europe_pediatric_drls.csv')
+            region = st.radio(
                 'Select body region:',
-                (df['Region']) # adult DRL accessed by body region
-            )
-        else: # life_stage == "Child"
-            child_body_region = st.radio( 
-                'Select body region:',
-                ('Head', 'Chest', 'Abdomen')
-            )
-            df = load_ref(life_stage, child_body_region)
-
-            if (child_body_region=='Head'): 
-                age_class = st.selectbox(
-                    'Select age class: ',
-                    (df['Age']) # child head DRL accessed by age
-                )
-            else: # child_body_region == 'Chest' or 'Abdomen'
-                weight_class = st.selectbox(
-                    'Select weight class: ',
-                    (df['Weight']) # child chest or abdomen DRL accessed by weight
-                )
-        
-        if (life_stage == 'Adult'): 
-            include_indications = st.checkbox('Do you have clinical indications to include?')
-
-    return (life_stage, 
-            adult_body_region, child_body_region, 
-            age_class, weight_class, 
-            include_indications,
-            df)
-
-'''
-- Input demographic information according to US reference
-
-Decision paths:
-- 
-'''
-def us_demographics_expander():
-    life_stage = None # 'Child' or 'Adult'
-    adult_body_region = None # 'Head', 'Neck', 'Cervical spine', 'Chest', 'CTPA', 'Abdomen-pelvis', or 'Chest-abdomen-pelvis'
-    child_body_region = None # 'Head', 'Chest', 'Abdomen', or 'Chest-abdomen-pelvis'
-    age_class = None # 0-1 year, 1-5 years, 5-10 years, 10-15 years, 15-18 years ('Head': 0-1 year, 1-2 years, 2-6 years, 6-18 years)
-    include_indications = None # boolean
-    df = None # pandas dataframe
-    
-    with st.expander('**Demographics**', expanded=True):
-        life_stage = st.radio(
-                'Select age group:',
-                ('Child', 'Adult')
-            ) 
-    
-        if (life_stage == 'Child'): 
-            child_body_region = st.radio( 
-                'Select body region:',
-                ('Head', 'Chest', 'Abdomen', 'Chest-Abdomen-Pelvis')
-            )
-            df = load_ref(life_stage, child_body_region, use_europe=False)
-
-            age_class = st.selectbox(
-                'Select age class: ',
-                (df['Age']) # child DRL accessed by age
-            )
-        else: # life_stage == 'Adult'
-            df = load_ref(life_stage, 'regions', use_europe=False)
-            adult_body_region = st.selectbox(
-                'Select body region:',
-                (df['Region'])  # adult DRL accessed by body region
-            )
-            include_indications = st.checkbox('Do you have clinical indications to include?')
-
-        return life_stage, adult_body_region, child_body_region, age_class, include_indications, df
-
-'''
-- Input clinical indications
-
-Decision paths:
-- 'Adult' -> ('Head', 'Neck', 'Chest', 'Abdomen') -> Clinical indications
-- 'Adult' -> (All other) -> No clinical indications
-'''
-def clinical_indications_expander(adult_body_region, use_europe=True):
-    with st.expander('**Clinical Indications**', expanded=True):
-        df = load_ref('adult', 'indicators', use_europe)
-        indication_options = df[df['Region']==adult_body_region]['Indication']
-
-        if (indication_options.size > 0):
-            indication = st.radio(
-                'Select clinical indication: ',
-                (indication_options)
+                df['Region'].unique()
             )
 
-            return indication, df
-        else:
-            st.info('DRLs are only available for a limited number of clinical indications.')
-            return None, None
+            df = df[df['Region'] == region]
+            choice = st.selectbox(
+                'Select the patient\'s age or weight group: ',
+                df['Age/Weight']
+            )
+            ctdivol, dlp = retrieve_ref_doses(df, 'Age/Weight', choice)
 
-'''
-- Input CTDIvol and DLP
-'''
-def system_parameters_expander(ref_ctdivol, ref_dlp):
-    with st.expander('**CT Doses**', expanded=True):
-        max_ctdivol = float(10*ref_ctdivol) if ref_ctdivol != '-' else None
-        max_dlp = float(10*ref_dlp) if ref_dlp != '-' else None
-        
-        col1, _, _ = st.columns(3)
-        with col1: 
-            num_phases = st.number_input('Number of Phases', min_value=1, max_value=10)
-            ctdivol_arr = np.empty(num_phases)
-            dlp_arr = np.empty(num_phases)
+            return patient_type, region, choice, ctdivol, dlp
 
-        innercol1, innercol2 = st.columns(2)
-        for i in range(num_phases):
-            with innercol1:
-                ctdivol_arr[i] = st.number_input('CTDIvol (mGy)', step=0.1, min_value=0.0, max_value=max_ctdivol, format='%.1f', key=i)
+        elif st.checkbox('Include clinical indications?'): 
+            df = load_df('europe_clinical_drls.csv')
+            region = st.radio(
+                'Select body region: ',
+                df['Region'].unique()
+            )
             
-            with innercol2:
-                dlp_arr[i] = st.number_input('DLP (mGy·cm)', step=1.0,  min_value=0.0, max_value=max_dlp, format='%.0f', key=99-i)
+            df = df[df['Region'] == region]
+            indication = st.selectbox(
+                'Select clinical indication: ',
+                df['Clinical Indication']
+            )
+            ctdivol, dlp = retrieve_ref_doses(df, 'Clinical Indication', indication)
+
+            return patient_type, indication, ctdivol, dlp
+
+        else:
+            df = load_df('uk_adult_drls.csv')
+            region = st.radio(
+                'Select body region: ',
+                df['Region'].unique()
+            )
+            ctdivol, dlp = retrieve_ref_doses(df, 'Region', region)
+
+            return patient_type, region, ctdivol, dlp
+    
+def us_data_input():
+    with st.container(border=True):
+        st.subheader('**Data Input**')
+
+        patient_type = st.radio(
+            'Is the patient a child or adult?',
+            ('Child', 'Adult')
+        )
+
+        if (patient_type == 'Child'):
+            df = load_df('us_pediatric_drls.csv')
+            region = st.radio(
+                'Select body region:',
+                df['Region'].unique()
+            )
+
+            df = df[df['Region'] == region]
+            age_or_weight = st.selectbox(
+                'Select the patient\'s age or weight group: ',
+                df['Age/Weight']
+            )
+
+            if (region == 'Head'): 
+                contrast = st.checkbox('Check if using contrast', value=False, disabled=True)
+            elif (region == 'Chest-Abdomen-Pelvis' or (region == 'Abdomen' and age_or_weight=='0-1 year')):
+                contrast = st.checkbox('Check if using contrast', value=True, disabled=True)
+            else:
+                contrast = st.checkbox('Check if using contrast')
+
+            ctdivol, dlp = retrieve_ref_doses(df, 'Age/Weight', age_or_weight, contrast)
+
+            return patient_type, region, age_or_weight, ctdivol, dlp
+
+        elif st.checkbox('Include clinical indications?'): 
+            df = load_df('us_clinical_drls.csv')
+            region = st.radio(
+                'Select body region: ',
+                df['Region'].unique()
+            )
+            
+            df = df[df['Region'] == region]
+            indication = st.selectbox(
+                'Select clinical indication: ',
+                df['Clinical Indication']
+            )
+            ctdivol, dlp = retrieve_ref_doses(df, 'Clinical Indication', indication)
+
+            return patient_type, indication, ctdivol, dlp
+        
+        else:
+            df = load_df('us_adult_drls.csv')
+            region = st.radio(
+                'Select body region: ',
+                df['Region'].unique()
+            )
+
+            if (region in ['Head', 'Cervical spine']):
+                contrast = st.checkbox('Check if using contrast', value=False, disabled=True)
+            elif (region in ['Neck', 'CTPA', 'Chest-abdomen-pelvis']):
+                contrast = st.checkbox('Check if using contrast', value=True, disabled=True)
+            else:
+                contrast = st.checkbox('Check if using contrast')
+
+            ctdivol, dlp = retrieve_ref_doses(df, 'Region', region, contrast)
+
+            return patient_type, region, ctdivol, dlp
+            
+def system_parameters_input(ctdivol, dlp):
+    with st.container(border=True):
+        st.subheader('**System Parameters**')
+        
+        with st.columns(3)[0]:
+            num_phases = st.number_input('Number of Phases', min_value=1, max_value=10)
+            ctdivol_disable = True
+            dlp_disable = True
+            max_ctdivol = None
+            max_dlp = None
+            
+            if (ctdivol != '-'): 
+                ctdivol_disable = False
+                max_ctdivol = 10*ctdivol
+            if (dlp != '-'): 
+                dlp_disable = False
+                max_dlp = (10/num_phases)*dlp
+
+        ctdivol_arr = np.empty(num_phases)
+        dlp_arr = np.empty(num_phases)
+        col1, col2 = st.columns(2)
+        for i in range(num_phases):
+            with col1:
+                ctdivol_arr[i] = st.number_input('CTDIvol (mGy)', step=0.1, 
+                                                 min_value=0.0, max_value=max_ctdivol, 
+                                                 format='%.1f', key=i, disabled=ctdivol_disable)
+            
+            with col2:
+                dlp_arr[i] = st.number_input('DLP (mGy·cm)', step=1.0, 
+                                             min_value=0.0, max_value=max_dlp, 
+                                             format='%.0f', key=99-i, disabled=dlp_disable)                                            
 
     return np.median(ctdivol_arr), np.sum(dlp_arr)
-'''
-- View recommendations
 
-Decision paths:
-- (>=1 dose exceeds 'DRL') and ('body_region' in 'rec_df) -> Detailed recommendation
-- (>=1 dose exceeds 'DRL') -> ('body_region' not in 'rec_df') -> Generic recommendation
-- Both doses below 'DRL' -> Congratulations message
-'''
-def recommendations_expander(ctdivol, dlp, 
-                             ref_ctdivol, ref_dlp, 
-                             life_stage, body_region, rec_df):
-    
+def recommendations(ref_ctdivol, ref_dlp, ctdivol, dlp, patient_type, region):
+    df = load_df('recommendations.csv')
     ctdivol_safe = compare_doses(ref_ctdivol, ctdivol, 'CTDIvol')
     dlp_safe = compare_doses(ref_dlp, dlp, 'DLP')
-    
-    if not(ctdivol_safe and dlp_safe):
-        valid_body_regions = ['Head', 'Chest', 'Abdomen']
 
-        if body_region in valid_body_regions: 
-            key = f'{life_stage} {body_region}'
-            rec = rec_df.loc[rec_df['Category']==key, 'Recommendation'].values[0]
-            st.info(rec)
+    if not (ctdivol_safe and dlp_safe):        
+        st.write(f'{patient_type} {region}')
+        df = df[df['Category'] == f'{patient_type} {region}']
 
+        if (not df.empty):
+            st.info(df['Recommendation'].values[0])
         else: 
-            st.info('Unfortunately, there are no specific recommendations available for these inputs.')
+            st.info('Unfortunately, there are no specific recommendations available for these inputs. However, please attempt to reduce dose.')
     else:
         st.success('Congratulations! Your doses are below the suggested DRLs.')

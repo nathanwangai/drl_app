@@ -1,8 +1,8 @@
-Region,CTDIvol_wo_contrast,DLP_wo_contrast,CTDIvol_w_contrast,DLP_w_contrast
+Region,CTDIvol,DLP,CTDIvol_contrast,DLP_contrast
 Head,56,962,-,-
 Neck,-,-,19,563
 Cervical spine,28,562,-,-
 Chest,12,443,13,469
 CTPA,-,-,14,445
-Abdomen,16,781,15,755
+Abdomen-pelvis,16,781,15,755
 Chest-abdomen-pelvis,-,-,15,947

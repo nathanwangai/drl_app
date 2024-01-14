@@ -1,0 +1,11 @@
+Region,Clinical Indication,CTDIvol,DLP
+Head,Chronic Sinusitis,26.9,446
+Head,Stroke,56.2,1072
+Neck,Cervical spine trauma,24.1,609
+Chest,CACS,8,125
+Chest,Lung cancer,11.9,478
+Chest,Pulmonary embolism,14.9,594
+Chest,Coronary CTA,26.5,914
+Abdomen,Hepatocellular carcinoma,12.5,1773
+Abdomen,Colic/abdominal pain,12.6,645
+Abdomen,Appendicitis,14.5,880

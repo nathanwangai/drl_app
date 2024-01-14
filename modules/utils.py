@@ -3,6 +3,36 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
+
+#####
+@st.cache_data
+def retrieve_ref_doses(df, col_name, choice, contrast=False):
+    if contrast:
+        ctdivol = df[df[col_name] == choice]['CTDIvol_contrast'].values[0]
+        dlp = df[df[col_name] == choice]['DLP_contrast'].values[0]
+    else:
+        ctdivol = df[df[col_name] == choice]['CTDIvol'].values[0]
+        dlp = df[df[col_name] == choice]['DLP'].values[0]
+        
+    if (ctdivol != '-'): ctdivol = float(ctdivol)
+    if (dlp != '-'): dlp = float(dlp)
+
+    return ctdivol, dlp
+
+@st.cache_data
+def load_df(fname):
+    return pd.read_csv(f'drls\{fname}')
+
+def compare_doses(ref_dose, dose, dose_type):
+    if (ref_dose != '-' and dose > ref_dose):
+        val = (dose/ref_dose - 1) * 100
+        st.error(f'Unfortunately, your {dose_type} is {val:.0f}% greater than the suggested DRL.')
+        return False
+    
+    return True
+
+#####
+
 '''
 - USAGE: loads a csv file containing DRL values
 - id1: 'child' or 'adult'
@@ -17,12 +47,16 @@ def load_ref_helper(id1, id2, use_europe):
 
     return pd.read_csv(fpath)
 
-'''
-- USAGE: creates dose warning bar plot
-- ref_dose: dose suggested by DRL
-- dose: theoretical examination dose
-'''
 def create_dose_bars(title, ref_dose, dose):
+    '''
+    - creates dose warning bar plot
+
+    Args:
+    - ref_dose: dose suggested by DRL
+    - dose: theoretical examination dose
+
+    Returns: nothing
+    '''
     fig, ax = plt.subplots(figsize=(8, 2))
     ax.barh(' ', ref_dose, color='green', alpha=0.15)
     ax.barh(' ', ref_dose*9, left=ref_dose, color='red', alpha=0.15)
@@ -40,33 +74,7 @@ def create_dose_bars(title, ref_dose, dose):
 
     ax.axvline(x=dose, color='red', linestyle='--', lw=4)
     ax.set_title(title, fontsize=24)
-    st.pyplot(fig)
-
-'''
-- USAGE: retrieves DRL values of CTDIvol and DLP
-- df: dataframe for the DRL csv file
-- key: variable to retrieve DRL (e.g. age or weight)
-- contrast_usage: 'Without contrast' or 'With contrast'
-'''
-def retrieve_ref_doses(df, key, any_indications=False, contrast_usage=None):
-    col_name = df.columns[0]
-    ctdi_type = 'CTDIvol'
-    dlp_type = 'DLP'
-
-    if not any_indications:
-        if (contrast_usage == 'With contrast'): 
-            ctdi_type = 'CTDIvol_w_contrast'
-            dlp_type = 'DLP_w_contrast'
-        elif (contrast_usage == 'Without contrast'):
-            ctdi_type = 'CTDIvol_wo_contrast'
-            dlp_type = 'DLP_wo_contrast'
-    
-    ref_ctdivol = df[df[col_name] == key][ctdi_type].values[0]
-    ref_dlp = df[df[col_name] == key][dlp_type].values[0]
-    if (ref_ctdivol != '-'): ref_ctdivol = float(ref_ctdivol)
-    if (ref_dlp != '-'): ref_dlp = float(ref_dlp)
-
-    return ref_ctdivol, ref_dlp
+    return st.pyplot(fig)
 
 '''
 - USAGE: returns False (meaning unsafe) if dose exceeds the DRL
