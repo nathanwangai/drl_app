@@ -10,26 +10,27 @@ def sidebar():
             ('Europe', 'United States')
         )
         
-        if (ref_country == 'United States'):
-            st.markdown('''
-                        - **Pediatric doses:** Kanal KM, Butler PF, Chatfield MB, et al. U.S. Diagnostic Reference Levels and Achievable Doses for 10 Pediatric CT Examinations. Radiology. 
-                        2022;302(1):164-174. [doi:10.1148/radiol.2021211241](https://pubs.rsna.org/doi/10.1148/radiol.2021211241)
-                        - **Pediatric and adult doses:** ACR–AAPM–SPR PRACTICE PARAMETER FOR DIAGNOSTIC REFERENCE LEVELS AND ACHIEVABLE DOSES IN MEDICAL X-RAY IMAGING. Published online 2022. Accessed September 10, 2023. 
-                        https://www.acr.org/-/media/ACR/Files/Practice-Parameters/diag-ref-levels.pdf 
-                        - **Clinical indication-based doses:** Bos D, Yu S, Luong J, et al. Diagnostic reference levels and median doses for common clinical indications of CT: findings from an international registry. Eur Radiol. 
-                        2022;32(3):1971-1982. [doi:10.1007/s00330-021-08266-1](https://link.springer.com/article/10.1007/s00330-021-08266-1)
-                        ''')
-        else:
-            st.markdown('''
-                        - **Pediatric doses:** Directorate-General for Energy (European Commission). Technical Recommendations for Monitoring Individuals for Occupational Intakes of Radionuclides. Publications Office of the European Union; 2018. Accessed September 11, 2023. 
-                        https://data.europa.eu/doi/10.2833/393101
-                        - **Adult doses (UK):** National Diagnostic Reference Levels (NDRLs) from 13 October 2022. GOV.UK. Accessed September 10, 2023. 
-                        https://www.gov.uk/government/publications/diagnostic-radiology-national-diagnostic-reference-levels-ndrls/ndrl
-                        - **Clinical indication-based doses:** 
-                            - Directorate-General for Energy (European Commission), Damilakis J, Frija G, et al. European Study on Clinical Diagnostic Reference Levels for X-Ray Medical Imaging: EUCLID. Publications Office of the European Union; 2021. Accessed September 10, 2023. 
-                              https://data.europa.eu/doi/10.2833/452154 
-                            - Diagnostic reference levels and median doses for common clinical indications of CT: findings from an international registry. Eur Radiol. 
-                              2022;32(3):1971-1982. [doi:10.1007/s00330-021-08266-1](https://link.springer.com/article/10.1007/s00330-021-08266-1)
+        if st.toggle('View References'):
+            if (ref_country == 'United States'):
+                st.markdown('''
+                            - **Pediatric doses:** Kanal KM, Butler PF, Chatfield MB, et al. U.S. Diagnostic Reference Levels and Achievable Doses for 10 Pediatric CT Examinations. Radiology. 
+                            2022;302(1):164-174. [doi:10.1148/radiol.2021211241](https://pubs.rsna.org/doi/10.1148/radiol.2021211241)
+                            - **Pediatric and adult doses:** ACR–AAPM–SPR PRACTICE PARAMETER FOR DIAGNOSTIC REFERENCE LEVELS AND ACHIEVABLE DOSES IN MEDICAL X-RAY IMAGING. Published online 2022. Accessed September 10, 2023. 
+                            https://www.acr.org/-/media/ACR/Files/Practice-Parameters/diag-ref-levels.pdf 
+                            - **Clinical indication-based doses:** Bos D, Yu S, Luong J, et al. Diagnostic reference levels and median doses for common clinical indications of CT: findings from an international registry. Eur Radiol. 
+                            2022;32(3):1971-1982. [doi:10.1007/s00330-021-08266-1](https://link.springer.com/article/10.1007/s00330-021-08266-1)
+                            ''')
+            else:
+                st.markdown('''
+                            - **Pediatric doses:** Directorate-General for Energy (European Commission). Technical Recommendations for Monitoring Individuals for Occupational Intakes of Radionuclides. Publications Office of the European Union; 2018. Accessed September 11, 2023. 
+                            https://data.europa.eu/doi/10.2833/393101
+                            - **Adult doses (UK):** National Diagnostic Reference Levels (NDRLs) from 13 October 2022. GOV.UK. Accessed September 10, 2023. 
+                            https://www.gov.uk/government/publications/diagnostic-radiology-national-diagnostic-reference-levels-ndrls/ndrl
+                            - **Clinical indication-based doses:** 
+                                - Directorate-General for Energy (European Commission), Damilakis J, Frija G, et al. European Study on Clinical Diagnostic Reference Levels for X-Ray Medical Imaging: EUCLID. Publications Office of the European Union; 2021. Accessed September 10, 2023. 
+                                https://data.europa.eu/doi/10.2833/452154 
+                                - Diagnostic reference levels and median doses for common clinical indications of CT: findings from an international registry. Eur Radiol. 
+                                2022;32(3):1971-1982. [doi:10.1007/s00330-021-08266-1](https://link.springer.com/article/10.1007/s00330-021-08266-1)
                         ''')
 
     return ref_country
@@ -192,7 +193,7 @@ def recommendations(ref_ctdivol, ref_dlp, ctdivol, dlp, patient_type, region):
     dlp_safe = compare_doses(ref_dlp, dlp, 'DLP')
 
     if not (ctdivol_safe and dlp_safe):        
-        st.write(f'{patient_type} {region}')
+        # st.write(f'{patient_type} {region}')
         df = df[df['Category'] == f'{patient_type} {region}']
 
         if (not df.empty):

@@ -1,10 +1,7 @@
-import streamlit as st
-import matplotlib.pyplot as plt
 import pandas as pd
-import numpy as np
+import streamlit as st
+import plotly.graph_objects as go
 
-
-#####
 @st.cache_data
 def retrieve_ref_doses(df, col_name, choice, contrast=False):
     if contrast:
@@ -31,61 +28,45 @@ def compare_doses(ref_dose, dose, dose_type):
     
     return True
 
-#####
+def dose_gauge_plot(ref_dose, dose, dose_type):
 
-'''
-- USAGE: loads a csv file containing DRL values
-- id1: 'child' or 'adult'
-- id2: 'head', 'chest', 'abdomen', 'regions', or 'indicators'
-'''
-def load_ref_helper(id1, id2, use_europe): 
-    if use_europe:
-        country = 'uk' if (id2 == 'regions') else 'europe'
-        fpath = f'drl_references/europe/{country}_{id1.lower()}_{id2.lower()}.csv'
-    else:
-        fpath = f'drl_references/united_states/us_{id1.lower()}_{id2.lower()}.csv'
+    color = 'green' if dose < ref_dose else 'red'
+    suffix = ' mGy' if dose_type == 'CTDIvol' else ' mGy⋅cm'
 
-    return pd.read_csv(fpath)
+    fig = go.Figure()
+    fig.add_trace(go.Indicator(
+            mode = "number+gauge",
+            value = dose,
+            number = {
+                'suffix': suffix,
+                'font.size': 42
+            },
+            gauge = {
+                'axis': {'range': [0, 10*ref_dose], 
+                         'tickfont': {'size': 32},
+                         'tickcolor': 'black'},
+                'bar': {'color': color},
+                'bordercolor' : 'white',
+                'steps': [
+                    {'range': [0, ref_dose], 'color': 'lightgreen'},
+                    {'range': [ref_dose, 10*ref_dose], 'color': 'pink'}
+                ]
+            }
+        )
+    )
 
-def create_dose_bars(title, ref_dose, dose):
-    '''
-    - creates dose warning bar plot
+    fig.add_annotation(x=0.5, y=0.45, 
+                   text = dose_type,
+                   font = {'size': 42},
+                   showarrow = False,
+    )
 
-    Args:
-    - ref_dose: dose suggested by DRL
-    - dose: theoretical examination dose
+    fig.update_layout(
+        width = 600,
+        height = 300,
+        margin = dict(t=50, b=20, l=100, r=100)
+    )
 
-    Returns: nothing
-    '''
-    fig, ax = plt.subplots(figsize=(8, 2))
-    ax.barh(' ', ref_dose, color='green', alpha=0.15)
-    ax.barh(' ', ref_dose*9, left=ref_dose, color='red', alpha=0.15)
+    fig.write_image(f'static/{dose_type}_gauge.png')
 
-    # hide borders and y-axis
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    ax.spines['bottom'].set_visible(False)
-    ax.spines['left'].set_visible(False)
-    ax.get_yaxis().set_visible(False)
-
-    ax.set_xticks(np.arange(6) * 2*ref_dose)
-    ax.tick_params(axis='x', labelsize=24)
-    ax.xaxis.set_tick_params(width=3, length=9)
-
-    ax.axvline(x=dose, color='red', linestyle='--', lw=4)
-    ax.set_title(title, fontsize=24)
-    return st.pyplot(fig)
-
-'''
-- USAGE: returns False (meaning unsafe) if dose exceeds the DRL
-- ref_dose: dose suggested by DRL
-- dose: theoretical examination dose
-- name: 'CTDIvol' or 'DLP'
-'''
-def compare_doses(ref_dose, dose, name):
-    if (ref_dose != '-' and dose > ref_dose):
-        val = (dose/ref_dose - 1) * 100
-        st.error(f'Unfortunately, your {name} is {val:.0f}% greater than the suggested DRL.')
-        return False
-    
-    return True
+    return None
