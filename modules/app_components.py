@@ -9,29 +9,6 @@ def sidebar():
             'Select reference standard:',
             ('Europe', 'United States')
         )
-        
-        if st.toggle('View References'):
-            if (ref_country == 'United States'):
-                st.markdown('''
-                            - **Pediatric doses:** Kanal KM, Butler PF, Chatfield MB, et al. U.S. Diagnostic Reference Levels and Achievable Doses for 10 Pediatric CT Examinations. Radiology. 
-                            2022;302(1):164-174. [doi:10.1148/radiol.2021211241](https://pubs.rsna.org/doi/10.1148/radiol.2021211241)
-                            - **Pediatric and adult doses:** ACR–AAPM–SPR PRACTICE PARAMETER FOR DIAGNOSTIC REFERENCE LEVELS AND ACHIEVABLE DOSES IN MEDICAL X-RAY IMAGING. Published online 2022. Accessed September 10, 2023. 
-                            https://www.acr.org/-/media/ACR/Files/Practice-Parameters/diag-ref-levels.pdf 
-                            - **Clinical indication-based doses:** Bos D, Yu S, Luong J, et al. Diagnostic reference levels and median doses for common clinical indications of CT: findings from an international registry. Eur Radiol. 
-                            2022;32(3):1971-1982. [doi:10.1007/s00330-021-08266-1](https://link.springer.com/article/10.1007/s00330-021-08266-1)
-                            ''')
-            else:
-                st.markdown('''
-                            - **Pediatric doses:** Directorate-General for Energy (European Commission). Technical Recommendations for Monitoring Individuals for Occupational Intakes of Radionuclides. Publications Office of the European Union; 2018. Accessed September 11, 2023. 
-                            https://data.europa.eu/doi/10.2833/393101
-                            - **Adult doses (UK):** National Diagnostic Reference Levels (NDRLs) from 13 October 2022. GOV.UK. Accessed September 10, 2023. 
-                            https://www.gov.uk/government/publications/diagnostic-radiology-national-diagnostic-reference-levels-ndrls/ndrl
-                            - **Clinical indication-based doses:** 
-                                - Directorate-General for Energy (European Commission), Damilakis J, Frija G, et al. European Study on Clinical Diagnostic Reference Levels for X-Ray Medical Imaging: EUCLID. Publications Office of the European Union; 2021. Accessed September 10, 2023. 
-                                https://data.europa.eu/doi/10.2833/452154 
-                                - Diagnostic reference levels and median doses for common clinical indications of CT: findings from an international registry. Eur Radiol. 
-                                2022;32(3):1971-1982. [doi:10.1007/s00330-021-08266-1](https://link.springer.com/article/10.1007/s00330-021-08266-1)
-                        ''')
 
     return ref_country
 
@@ -159,17 +136,10 @@ def system_parameters_input(ctdivol, dlp):
         
         with st.columns(3)[0]:
             num_phases = st.number_input('Number of Phases', min_value=1, max_value=10)
-            ctdivol_disable = True
-            dlp_disable = True
-            max_ctdivol = None
-            max_dlp = None
-            
-            if (ctdivol != '-'): 
-                ctdivol_disable = False
-                max_ctdivol = 10*ctdivol
-            if (dlp != '-'): 
-                dlp_disable = False
-                max_dlp = (10/num_phases)*dlp
+            disable_ctdivol = (ctdivol == '-')
+            disable_dlp = (dlp == '-')
+            max_ctdivol = 10*ctdivol if not disable_ctdivol else None
+            max_dlp = (10/num_phases)*dlp if not disable_dlp else None
 
         ctdivol_arr = np.empty(num_phases)
         dlp_arr = np.empty(num_phases)
@@ -178,12 +148,12 @@ def system_parameters_input(ctdivol, dlp):
             with col1:
                 ctdivol_arr[i] = st.number_input('CTDIvol (mGy)', step=0.1, 
                                                  min_value=0.0, max_value=max_ctdivol, 
-                                                 format='%.1f', key=i, disabled=ctdivol_disable)
+                                                 format='%.1f', key=i, disabled=disable_ctdivol)
             
             with col2:
                 dlp_arr[i] = st.number_input('DLP (mGy·cm)', step=1.0, 
                                              min_value=0.0, max_value=max_dlp, 
-                                             format='%.0f', key=99-i, disabled=dlp_disable)                                            
+                                             format='%.0f', key=99-i, disabled=disable_dlp)                                         
 
     return np.median(ctdivol_arr), np.sum(dlp_arr)
 
