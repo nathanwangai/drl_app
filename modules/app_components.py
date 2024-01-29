@@ -13,6 +13,10 @@ def sidebar():
     return ref_country
 
 def europe_data_input():
+    """
+    Returns:
+    tuple: patient_type, body_region, selector, contrast usage, ctdivol, dlp
+    """
     with st.container(border=True):
         st.subheader('**Data Input**')
 
@@ -21,48 +25,54 @@ def europe_data_input():
             ('Child', 'Adult')
         )
 
+    # -----| European Pediatric DRLs  |-----    
         if (patient_type == 'Child'):
             df = load_df('europe_pediatric_drls.csv')
-            region = st.radio(
+            body_region = st.radio(
                 'Select body region:',
                 df['Region'].unique()
             )
 
-            df = df[df['Region'] == region]
-            choice = st.selectbox(
+            df = df[df['Region'] == body_region]
+            size_group = st.selectbox(
                 'Select the patient\'s age or weight group: ',
                 df['Age/Weight']
             )
-            ctdivol, dlp = retrieve_ref_doses(df, 'Age/Weight', choice)
+            ctdivol, dlp = retrieve_ref_doses(df, 'Age/Weight', size_group)
 
-            return patient_type, region, choice, ctdivol, dlp
+            return patient_type, body_region, size_group, False, ctdivol, dlp
+    # ----- ----- ----- ----- -----
 
+    # -----| European Adult Clinical-Based DRLs |-----
         elif st.checkbox('Include clinical indications?'): 
             df = load_df('europe_clinical_drls.csv')
-            region = st.radio(
+            body_region = st.radio(
                 'Select body region: ',
                 df['Region'].unique()
             )
             
-            df = df[df['Region'] == region]
+            df = df[df['Region'] == body_region]
             indication = st.selectbox(
                 'Select clinical indication: ',
                 df['Clinical Indication']
             )
             ctdivol, dlp = retrieve_ref_doses(df, 'Clinical Indication', indication)
 
-            return patient_type, indication, ctdivol, dlp
+            return patient_type, body_region, indication, False, ctdivol, dlp
+    # ----- ----- ----- ----- -----
 
+    # -----| United Kingdom Adult DRLs |-----
         else:
             df = load_df('uk_adult_drls.csv')
-            region = st.radio(
+            body_region = st.radio(
                 'Select body region: ',
                 df['Region'].unique()
             )
-            ctdivol, dlp = retrieve_ref_doses(df, 'Region', region)
+            ctdivol, dlp = retrieve_ref_doses(df, 'Region', body_region)
 
-            return patient_type, region, ctdivol, dlp
-    
+            return patient_type, body_region, 'None', False, ctdivol, dlp
+    # ----- ----- ----- ----- -----
+        
 def us_data_input():
     with st.container(border=True):
         st.subheader('**Data Input**')
@@ -163,12 +173,11 @@ def recommendations(ref_ctdivol, ref_dlp, ctdivol, dlp, patient_type, region):
     dlp_safe = compare_doses(ref_dlp, dlp, 'DLP')
 
     if not (ctdivol_safe and dlp_safe):        
-        # st.write(f'{patient_type} {region}')
         df = df[df['Category'] == f'{patient_type} {region}']
 
         if (not df.empty):
             st.info(df['Recommendation'].values[0])
         else: 
-            st.info('Unfortunately, there are no specific recommendations available for these inputs. However, please attempt to reduce dose.')
+            st.info('Unfortunately, there are no specific recommendations available for these inputs.')
     else:
         st.success('Congratulations! Your doses are below the suggested DRLs.')
