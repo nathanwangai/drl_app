@@ -5,3 +5,4 @@ streamlit==1.29.0
 google-cloud-storage==2.14.0
 gcsfs==2023.12.2.post1
 fsspec==2023.12.2
+kaleido==0.2.1
