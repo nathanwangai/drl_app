@@ -3,6 +3,9 @@ import pandas as pd
 from modules.utils import dose_gauge_plot
 from modules.app_components import sidebar, europe_data_input, us_data_input, system_parameters_input, recommendations
 
+import os
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcs_credentials.json'
+
 st.set_page_config(page_title='CT-Dose-Check', page_icon='static/mgh_logo.png', layout='wide')
 st.title('CT Dose Check')
 
@@ -16,19 +19,22 @@ if 'ret' not in st.session_state:
 if 'doses' not in st.session_state:
     st.session_state['doses'] = None
 
-st.session_state['database'] = pd.read_csv('database.csv')
+path = 'gcs://data_bucket_ct_dose_check/nathan_test/database.csv'
+
+if 'database' not in st.session_state:
+    st.session_state['database'] = pd.read_csv(path)
 database = st.session_state['database']
 # ----- ----- ----- ----- -----
 
 if not st.session_state['disclaimer_accepted']: 
     st.info('''
             Most diagnostic reference levels (DRLs) are estimated for a specific cohort of patients undergoing typical
-            CT protocols. Therefore, DRLs should not be used for individual patients or as dose limits. However, DRLs
-            are essential for radiation dose optimization. Rather than the DRLs, users must use their facility’s
-            median dose values (typical values), representative of their CT equipment and patient population, for
-            checking individual patients. The current tool provides an example of optimizing CT radiation dose and
-            protocols on a national or international level. For local or facility-based dose optimization, it is essential
-            to use the median local/facility doses (Typical values).
+            CT protocols. Therefore, DRLs should not be used for individual patients or as dose limits. However, DRLs 
+            are essential for radiation dose optimization. Rather than the DRLs, users must use their facility’s median 
+            dose values (typical values), representative of their CT equipment and patient population, for checking 
+            individual patients. The current tool provides an example of optimizing CT radiation dose and protocols on 
+            a national or international level. For local or facility-based dose optimization, it is essential to use the 
+            median local/facility doses (Typical values).
             ''')
     
     if st.button('Accept Disclaimer'): 
@@ -84,6 +90,6 @@ else:
                         st.session_state['stored'] = True
                         st.rerun()
                 else:
-                    st.write(ret)
+                    st.write(ret[:-2] + st.session_state['doses'])
                     database.loc[len(database)] = ret[:-2] + st.session_state['doses']
-                    database.to_csv('database.csv', index=False)
+                    database.to_csv(path, index=False)

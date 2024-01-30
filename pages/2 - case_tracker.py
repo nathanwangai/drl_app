@@ -2,24 +2,39 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-df = pd.read_csv('database.csv')
-# col1, col2 = st.columns([0.8, 0.2])
+st.title('Case Tracker')
 
-# for i in range(len(df)):
-#     row = df.iloc[i]
-#     with col1:
-#         st.write(row)
+path = 'gcs://data_bucket_ct_dose_check/nathan_test/database.csv'
+df = pd.read_csv(path)
+
 
 st.data_editor(
     df,
     column_config = {
-        'patient_type': st.column_config.Column(
+        'patient_type': st.column_config.SelectboxColumn(
             'Patient Type',
-            disabled=True
+            options = ['Adult', 'Child'],
+            required = True
         ),
         'body_region': st.column_config.Column(
             'Body Region',
-            disabled=True
+            disabled = True
+        ),
+        'selector': st.column_config.Column(
+            'Selector',
+            disabled = True
+        ),
+        'contrast': st.column_config.CheckboxColumn(
+            'Contrast',
+            required = True
+        ),
+        'ctdivol': st.column_config.NumberColumn(
+            'CTDIvol (mGy)',
+            required = True
+        ),
+        'dlp': st.column_config.NumberColumn(
+            'DLP (mGy*cm)',
+            required = True
         )
     }, 
     num_rows='dynamic')
