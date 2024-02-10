@@ -1,13 +1,7 @@
 import streamlit as st
-import pandas as pd
+import modules.database_utils as db
 from modules.utils import dose_gauge_plot
 from modules.app_components import sidebar, europe_data_input, us_data_input, system_parameters_input, recommendations
-
-import os
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcs_credentials.json'
-
-st.set_page_config(page_title='CT-Dose-Check', page_icon='static/mgh_logo.png', layout='wide')
-st.title('CT Dose Check')
 
 # -----| Initialize Session Variables |-----
 if 'disclaimer_accepted' not in st.session_state:
@@ -19,32 +13,35 @@ if 'ret' not in st.session_state:
 if 'doses' not in st.session_state:
     st.session_state['doses'] = None
 
-path = 'gcs://data_bucket_ct_dose_check/nathan_test/database.csv'
-
-if 'database' not in st.session_state:
-    st.session_state['database'] = pd.read_csv(path)
-database = st.session_state['database']
+if 'user' in st.session_state:
+    path = st.session_state['path']
+    database = st.session_state['database']
 # ----- ----- ----- ----- -----
 
-if not st.session_state['disclaimer_accepted']: 
-    st.info('''
-            Most diagnostic reference levels (DRLs) are estimated for a specific cohort of patients undergoing typical
-            CT protocols. Therefore, DRLs should not be used for individual patients or as dose limits. However, DRLs 
-            are essential for radiation dose optimization. Rather than the DRLs, users must use their facility’s median 
-            dose values (typical values), representative of their CT equipment and patient population, for checking 
-            individual patients. The current tool provides an example of optimizing CT radiation dose and protocols on 
-            a national or international level. For local or facility-based dose optimization, it is essential to use the 
-            median local/facility doses (Typical values).
-            ''')
-    
-    if st.button('Accept Disclaimer'): 
-        st.session_state['disclaimer_accepted'] = True
-        st.rerun()
+st.set_page_config(page_title='Dose Checker', page_icon='static/mgh_logo.png', layout='wide')
 
-else:
+with st.columns([1,6,1])[1]:
+    st.title('CT Dose Check')
+
+    if not st.session_state['disclaimer_accepted']: 
+        st.info('''
+                Most diagnostic reference levels (DRLs) are estimated for a specific cohort of patients undergoing typical
+                CT protocols. Therefore, DRLs should not be used for individual patients or as dose limits. However, DRLs 
+                are essential for radiation dose optimization. Rather than the DRLs, users must use their facility’s median 
+                dose values (typical values), representative of their CT equipment and patient population, for checking 
+                individual patients. The current tool provides an example of optimizing CT radiation dose and protocols on 
+                a national or international level. For local or facility-based dose optimization, it is essential to use the 
+                median local/facility doses (Typical values).
+                ''')
+        
+        if st.button('I Understand'): 
+            st.session_state['disclaimer_accepted'] = True
+            st.rerun()
+
+if st.session_state['disclaimer_accepted']:
     ref_country = sidebar()
 
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([1, 3, 3, 1])[1:3]
     with col1:
         ret = europe_data_input() if (ref_country == 'Europe') else us_data_input()
         a, b = ret[0], ret[1]
@@ -85,11 +82,12 @@ else:
 
                 recommendations(ref_ctdivol, ref_dlp, ctdivol, dlp, a, b)
 
-                if not st.session_state['stored']:
+                if 'user' in st.session_state:
                     if st.button('Store in database'):
-                        st.session_state['stored'] = True
-                        st.rerun()
-                else:
-                    st.write(ret[:-2] + st.session_state['doses'])
-                    database.loc[len(database)] = ret[:-2] + st.session_state['doses']
-                    database.to_csv(path, index=False)
+                        st.toast(ret[:-2] + st.session_state['doses'])
+                        database.loc[len(database)] = ret[:-2] + st.session_state['doses']
+                        db.write_to_gcs(database, path)
+
+st.write('')
+
+db.user_sidebar()

@@ -1,2 +1,4 @@
-debug.ipynb
 .streamlit/secrets.toml
+debug.ipynb
+firebase_credentials.json
+gcs_credentials.json

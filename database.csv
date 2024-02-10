@@ -1,6 +1,0 @@
-patient_type,body_region,selector,contrast,ctdivol,dlp
-Child,Head,0-3 months,False,24.0,300.0
-Child,Chest,<5 kg,False,1.4,35.0
-Child,Head,0-3 months,False,24.0,300.0
-Child,Head,0-3 months,False,0.0,0.0
-Child,Head,0-3 months,False,50.0,1000.0

@@ -25,7 +25,7 @@ def europe_data_input():
             ('Child', 'Adult')
         )
 
-    # -----| European Pediatric DRLs  |-----    
+    # __________European Pediatric DRLs__________
         if (patient_type == 'Child'):
             df = load_df('europe_pediatric_drls.csv')
             body_region = st.radio(
@@ -41,7 +41,7 @@ def europe_data_input():
             ctdivol, dlp = retrieve_ref_doses(df, 'Age/Weight', size_group)
 
             return patient_type, body_region, size_group, False, ctdivol, dlp
-    # ----- ----- ----- ----- -----
+    # __________European Pediatric DRLs__________
 
     # -----| European Adult Clinical-Based DRLs |-----
         elif st.checkbox('Include clinical indications?'): 
