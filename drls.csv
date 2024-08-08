@@ -1,0 +1,79 @@
+Europe,Child,Head,0-3 months,24,300
+Europe,Child,Head,3-12 months,28,385
+Europe,Child,Head,1-6 years,40,505
+Europe,Child,Head,>6 years,50,650
+Europe,Child,Chest,<5 kg,1.4,35
+Europe,Child,Chest,5-15 kg,1.8,50
+Europe,Child,Chest,15-30 kg,2.7,70
+Europe,Child,Chest,30-50 kg,3.7,115
+Europe,Child,Chest,50-80 kg,5.4,200
+Europe,Child,Abdomen,<5 kg,-,45
+Europe,Child,Abdomen,5-15 kg,3.5,120
+Europe,Child,Abdomen,15-30 kg,5.4,150
+Europe,Child,Abdomen,30-50 kg,7.3,210
+Europe,Child,Abdomen,50-80 kg,13,480
+Europe,Adult,Chronic Sinusitis,11,188
+Europe,Adult,Stroke,48,807
+Europe,Adult,Cervical spine trauma,17,455
+Europe,Adult,CACS,4,72
+Europe,Adult,Lung cancer,8,348
+Europe,Adult,Pulmonary embolism,9,307
+Europe,Adult,Coronary CTA,25,415
+Europe,Adult,Hepatocellular carcinoma,9,354
+Europe,Adult,Colic/abdominal pain,8,436
+Europe,Adult,Appendicitis,9,498
+Europe,Adult,Head,47,790
+Europe,Adult,Neck,-,850
+Europe,Adult,Cervical spine,16,400
+Europe,Adult,Chest,8.5,290
+Europe,Adult,CTPA,9.1,310
+Europe,Adult,Abdomen-pelvis,10,530
+Europe,Adult,Chest-abdomen-pelvis,-,660
+United States,Child,Head,0-1 year,No,23,344
+United States,Child,Head,1-2 years,No,27,440
+United States,Child,Head,2-6 years,No,31,518
+United States,Child,Head,6-18 years,No,55,910
+United States,Child,Chest,0-1 year,No,1.7,27
+United States,Child,Chest,1-5 years,No,2.2,49
+United States,Child,Chest,5-10 years,No,2.5,70
+United States,Child,Chest,10-15 years,No,4.1,128
+United States,Child,Chest,15-18 years,No,7.4,257
+United States,Child,Chest,0-1 year,Yes,1.6,31
+United States,Child,Chest,1-5 years,Yes,2.4,58
+United States,Child,Chest,5-10 years,Yes,2.9,95
+United States,Child,Chest,10-15 years,Yes,7.2,272
+United States,Child,Chest,15-18 years,Yes,14,596
+United States,Child,Abdomen,0-1 year,No,-,-
+United States,Child,Abdomen,1-5 years,No,2.6,95
+United States,Child,Abdomen,5-10 years,No,4.8,171
+United States,Child,Abdomen,10-15 years,No,8.1,367
+United States,Child,Abdomen,15-18 years,No,11,510
+United States,Child,Abdomen,0-1 year,Yes,2.4,60
+United States,Child,Abdomen,1-5 years,Yes,2.9,100
+United States,Child,Abdomen,5-10 years,Yes,4.6,170
+United States,Child,Abdomen,10-15 years,Yes,7.9,358
+United States,Child,Abdomen,15-18 years,Yes,11,511
+United States,Child,Chest-Abdomen-Pelvis,0-1 year,Yes,2.7,89
+United States,Child,Chest-Abdomen-Pelvis,1-5 years,Yes,3,109
+United States,Child,Chest-Abdomen-Pelvis,5-10 years,Yes,4.3,204
+United States,Child,Chest-Abdomen-Pelvis,10-15 years,Yes,9.1,437
+United States,Child,Chest-Abdomen-Pelvis,15-18 years,Yes,17,964
+United States,Adult,Chronic Sinusitis,26.9,446
+United States,Adult,Stroke,56.2,1072
+United States,Adult,Cervical spine trauma,24.1,609
+United States,Adult,CACS,8,125
+United States,Adult,Lung cancer,11.9,478
+United States,Adult,Pulmonary embolism,14.9,594
+United States,Adult,Coronary CTA,26.5,914
+United States,Adult,Hepatocellular carcinoma,12.5,1773
+United States,Adult,Colic/abdominal pain,12.6,645
+United States,Adult,Appendicitis,14.5,880
+United States,Adult,Head,No,56,962
+United States,Adult,Cervical spine,No,28,562
+United States,Adult,Chest,No,12,443
+United States,Adult,Abdomen-pelvis,No,16,781
+United States,Adult,Neck,Yes,19,563
+United States,Adult,Chest,Yes,13,469
+United States,Adult,CTPA,Yes,14,445
+United States,Adult,Abdomen-pelvis,Yes,15,755
+United States,Adult,Chest-abdomen-pelvis,Yes,15,947
